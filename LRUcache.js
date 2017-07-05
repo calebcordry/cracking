@@ -14,35 +14,41 @@ class LinkedList {
   }
 
   addToTail(node) {
-    if (this.head) {
+    if (!this.head) { this.head = node; }
+    
+    if (this.tail) {
       this.tail.next = node;
       node.prev = this.tail;
     }
+  
     this.tail = node;
   }
 
   removeFromHead(){
-    if (!this.head) { return };
-
+    if (!this.head) { return; }
+    
     const result = this.head;
+      
+    if (this.head === this.tail) { 
+        this.head = null;
+        this.tail = null;
+        return result;
+    }
+
+    
     this.head = this.head.next;
     this.head.prev = null;
     
     return result;
   }
-}
 
-class LRUcache {
-  constructor(capacity) {
-    this.capacity = capacity;
-    this.count = 0;
-    this.list = new LinkedList();
-    this.map = {};
-  }
-
-  get(value) {
-    const node = this.map[value];
+  moveToTail(node) {
+    if (node === this.tail) { return; }
     
+    if (node === this.head) {
+      this.head = node.next;
+    }
+
     if (node.prev) {
       node.prev.next = node.next;
     }
@@ -51,33 +57,48 @@ class LRUcache {
       node.next.prev = node.prev;
     }
 
-    this.list.addToTail(node);
-    return node.value;
-  }
+    node.next = null;
 
-  put(key, value) {
-    if (this.count + 1 > this.capacity) {
-      this.delete();
-    }
-
-    this.map[key] = new Node(key, value);
-    this.count++;
-  }
-
-  delete() {
-    const node = this.list.removeFromHead();
-    delete this.map[node.key];
-    this.count--;
+    this.addToTail(node);
   }
 }
 
-const cache = new LRUcache(4);
-cache.put(1, 1);
-cache.put(2, 2);
-cache.get(1);       // returns 1
-cache.put(3, 3);    // evicts key 2
-cache.get(2);       // returns -1 (not found)
-cache.put(4, 4);    // evicts key 1
-cache.get(1);       // returns -1 (not found)
-cache.get(3);       // returns 3
-cache.get(4);       // returns 4
+const LRUCache = function(capacity) {
+  this.capacity = capacity;
+  this.count = 0;
+  this.list = new LinkedList();
+  this.map = {};
+};
+
+LRUCache.prototype.get = function(value) {
+  const node = this.map[value];
+  if (!node) { return -1; }
+
+  this.list.moveToTail(node);    
+  return node.value;
+};
+
+LRUCache.prototype.put = function(key, value) {
+  if(this.map[key]) {
+    const node = this.map[key];
+    node.value = value;
+    return this.list.moveToTail(node);
+  }
+
+
+  if (this.count + 1 > this.capacity) {
+    this.delete();
+  }
+
+  const node = new Node(key, value);
+  this.map[key] = node;
+  this.list.addToTail(node);
+  this.count++;
+};
+
+LRUCache.prototype.delete = function() {
+  const node = this.list.removeFromHead();
+  delete this.map[node.key];
+  this.count--;
+};
+    
