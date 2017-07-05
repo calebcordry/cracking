@@ -1,8 +1,4 @@
-const array = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
-
-const runningMedian = array => {
-
-};
+const input = require('./input');
 
 const swap = (array, index1, index2) => {
   const tmp = array[index1];
@@ -12,7 +8,11 @@ const swap = (array, index1, index2) => {
 
 class Heap {
   constructor(scoringFunction) {
-    this.scoringFunction = scoringFunction || () => a > b;
+    if (!scoringFunction) {
+      scoringFunction = (a, b) => a <= b;
+    }
+
+    this.scoringFunction = scoringFunction;
     this.storage = [null];
   }
 
@@ -28,6 +28,14 @@ class Heap {
     return result;
   }
 
+  peek() {
+    return this.storage[1];
+  }
+
+  length() {
+    return this.storage.length - 1;
+  }
+
   bubbleDown() {
     let parentIndex = 1;
     let leftChildIndex = parentIndex * 2;
@@ -40,11 +48,11 @@ class Heap {
       
       let smallestChildIndex = leftChildIndex;
 
-      if (rightChild && rightChild < leftChild) {
+      if (rightChild && this.scoringFunction(rightChild, leftChild)) {
         smallestChildIndex = rightChildIndex;
       }
       
-      if (parent <= this.storage[smallestChildIndex]) { break; }
+      if (this.scoringFunction(parent, this.storage[smallestChildIndex])) { break; }
       
       swap(this.storage, smallestChildIndex, parentIndex);
       parentIndex = smallestChildIndex;
@@ -61,7 +69,7 @@ class Heap {
       const parentIndex = Math.floor(index / 2);
       const parent = this.storage[parentIndex];
 
-      if (parent <= item) { break; }
+      if (this.scoringFunction(parent, item)) { break; }
       
       swap(this.storage, index, parentIndex);
       index = parentIndex;
@@ -69,19 +77,74 @@ class Heap {
   }
 }
 
-// index at 1;
-// parent = Math.floor(k / 2);
-// leftChild = k * 2;
-// rightChild = k * 2 + 1;
+class MedianFinder {
+  constructor() {
+    this.minHeap = new Heap();
+    this.maxHeap = new Heap((a, b) => a >= b);
+    this.count = 0; 
+    this.first = null;
+  }
 
-const h = new Heap();
-h.add(10);
-console.log(h.storage);
-h.add(6);
-console.log(h.storage);
-h.add(1);
-console.log(h.storage);
-h.add(3);
-console.log(h.storage);
-h.pop();
-console.log(h.storage);
+  add(value) {
+    if (this.count < 1) {
+      this.first = value;
+      return this.count++;
+    }
+
+    if (this.count == 1) {
+      const smaller = Math.min(this.first, value);
+      const larger = Math.max(this.first, value);
+      this.maxHeap.add(smaller);
+      this.minHeap.add(larger);
+      return this.count++;
+    }
+
+    if (value <= this.maxHeap.peek()) {
+      this.maxHeap.add(value);
+    }
+
+    else {
+      this.minHeap.add(value);
+    }
+
+    this.rebalanceIfNeeded();
+  }
+
+  rebalanceIfNeeded() {
+    if (Math.abs(this.maxHeap.length() - this.minHeap.length()) < 2) { return; }
+
+    if(this.maxHeap.length() > this.minHeap.length()) {
+      this.minHeap.add(this.maxHeap.pop());
+    }
+
+    if(this.minHeap.length() > this.maxHeap.length()) {
+      this.maxHeap.add(this.minHeap.pop());
+    }
+  }
+
+  getMedian() {
+    if (this.count === 0) { return; }
+    if (this.count === 1) { return this.first; }
+
+    if (this.maxHeap.length() === this.minHeap.length()) {
+      return (this.maxHeap.peek() + this.minHeap.peek()) / 2;
+    }
+
+    if (this.maxHeap.length() > this.minHeap.length()) {
+      return this.maxHeap.peek();
+    }
+
+    return this.minHeap.peek();
+  }
+}
+
+const doWork = array => {
+  const medianFinder = new MedianFinder();
+  for (let i = 0; i < array.length; i++) {
+    medianFinder.add(array[i]);
+    const median = medianFinder.getMedian().toFixed(1);
+    console.log(median);
+  }
+};
+
+doWork(input.split('\n').slice(1).map(Number));
