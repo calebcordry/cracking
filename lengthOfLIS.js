@@ -18,7 +18,7 @@ const lengthOfLIS = nums => {
     const notTaken = recurse(length, index + 1, lastTaken);
     
     return Math.max(taken, notTaken);
-  }
+  };
 
   return recurse(0, 0, -Infinity);
 };
