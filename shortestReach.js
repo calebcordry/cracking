@@ -39,7 +39,7 @@ const processData = (raw) => {
     line++;
     graph.findAllDistances(s);
   }
-}
+};
 
 const input = `2
 4 2
