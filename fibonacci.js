@@ -8,20 +8,21 @@ const fibonacci = (n) => {
 
 
 // DP
-const fibonacci2 = (n) => {
+const fibonacci2 = n => {
+  debugger;
   const dp = [];
-  dp[0] = 1;
-  dp[1] = 2;
+  dp[0] = 0;
+  dp[1] = 1;
 
-  for (i = 2; i < n; i++) {
+  for (i = 2; i <= n; i++) {
     dp[i] = dp[i - 1] + dp[i - 2];
   }
 
-  return dp[n - 1];
+  return dp[n];
 }
 
 console.time('brute');
-const res1 = fibonacci(45);
+// const res1 = fibonacci(45);
 console.timeEnd('brute');
 
 console.time('dp');
