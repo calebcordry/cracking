@@ -5,7 +5,7 @@ var twoSum = function(nums, target) {
     const number = nums[i];
     const remainder = target - number;
         
-    if (map.hasIbremainder]) {
+    if (map.hasOwnProperty(remainder)) {
       return [map[remainder], i];
     }
         
