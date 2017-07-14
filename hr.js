@@ -16,3 +16,4 @@ function maxDifference(a) {
 
   return maxDiff;
 }
+

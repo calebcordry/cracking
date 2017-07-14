@@ -1,20 +1,14 @@
-var longestPalindrome = function(s) {
-  const map = {};
-  let count = 0;
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var longestPalindrome = function(string) {
+  let longest = '';
 
-  for (let i = 0; i < s.length; i++) {
-    const letter = s[i];
+  for (let i = 0; i < string.length; i++) {
     
-    if (map[letter]) {
-      delete map[letter];
-      count++;
-    }
-
-    else {
-      map[letter] = 1;
-    }
   }
-
-  const odd = Object.keys(map).length ? 1 : 0;
-  return count * 2 + odd;
 };
+
+const res = longestPalindrome('babab');
+console.log(res);
