@@ -45,6 +45,29 @@ const changeMemo = (target, coins) => {
   return helper(0, target);
 };
 
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+// DP solution
+const coinChangeDP = (coins, target) => {
+  const dp = new Array(target + 1);
+  dp.fill(Infinity);
+  dp[0] = 0;
+
+  for(let i = 0;  i < coins.length; i++) {
+    const coin = coins[i];
+    for (let j = 1; j < dp.length; j++) {
+      if (j >= coin) {
+        const withCoin = 1 + dp[j - coin];
+        dp[j] = Math.min(dp[j], withCoin);
+      }
+    }
+  }
+
+  return dp[target] === Infinity ? -1 : dp[target];
+};
 
 console.time('brute');
 const result = change(500, [1, 2, 5, 9]);
@@ -54,8 +77,8 @@ console.time('memo');
 const resultM = changeMemo(500, [1, 2, 5, 9]);
 console.timeEnd('memo');
 
-// console.time('brute');
-// const result = change(1000, [2, 5, 3, 6]);
-// console.timeEnd('brute');
-// const result = changeMemo(4, [1, 2, 3]);
-console.log({ result, resultM });
+console.time('dp');
+const resultDP = coinChangeDP(1000, [2, 5, 3, 6]);
+console.timeEnd('dp');
+
+console.log({ result, resultM, resultDP });
