@@ -9,11 +9,16 @@ var canWinNim = function(n) {
   dp[3] = true;
     
   for (let i = 4; i <= n; i++) {
-    const cantWin = dp[n - 1] && dp[n - 2] && dp[n - 3];
+    const cantWin = dp[i - 1] && dp[i - 2] && dp[i - 3];
     dp[i] = !cantWin;
   } 
     
   return dp[n];
+};
+
+var canWinNim = function(n) {
+  if (n % 4 === 0) { return false; }
+  return true;
 };
 
 const result = canWinNim(10);
