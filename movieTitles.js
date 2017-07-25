@@ -7,18 +7,22 @@ function getMovieTitles(title) {
   return getPages(title)
     .then(pages => {
       const urls = [];
+      
       for(let i = 1; i <= pages; i++) {
         const url = `https://jsonmock.hackerrank.com/api/movies/search/?Title=${title}&page=${i}`;
         urls.push(url);
       }
 
       return Promise.all(urls.map(url => getPage(url)));
+
     }).then(data => {
       const allTitles = data.reduce((all, titles) => [...all, ...titles]);
-      allTitles.sort()
+      allTitles.sort();
+      
       for (let i = 0; i < allTitles.length; i++) {
         console.log(allTitles[i]);
       }
+
     });
 }
 
@@ -62,5 +66,9 @@ const getPage = url => {
   });
 };
 
-const result = getMovieTitles('spiderman');
-console.log(result);
+async function main () {
+  const result = await getMovieTitles('spiderman');
+  console.log(result);
+}
+
+main();
