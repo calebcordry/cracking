@@ -34,5 +34,6 @@ function wordpattern(pattern, input) {
   return lookForMatch(0, 0, map);
 }
 
-const result = wordpattern('abba', 'redredredred');
+// const result = wordpattern('abba', 'redredredred');
+const result = wordpattern('ab', 'aa');
 console.log(result);
