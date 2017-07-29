@@ -7,21 +7,32 @@ var reverseWords = function(str) {
     return str; 
   }
 
-  const words = str.split(' ');
-  let first = 0;
-  let last = words.length - 1;
-
-  while (first < last) {
-    const temp = words[first];
-    words[first] = words[last];
-    words[last] = temp;
-
-    first++;
-    last--;
+  str.reverse();
+  
+  let start = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    if (char === ' ') {
+      reverse(start, i - 1, str);
+      start = i + 1;
+    }
   }
 
-  return words.join(' ');
+  reverse(start, str.length - 1, str);
 };
 
-const result = reverseWords('a b');
-console.log(result);
+function reverse(start, stop, str) {
+  while(start < stop) {
+    const tmp = str[start];
+    str[start] = str[stop];
+    str[stop] = tmp;
+
+    start++;
+    stop--;
+  }
+}
+
+
+let str = 'hi a  there'.split('');
+const result = reverseWords(str);
+console.log(str);
