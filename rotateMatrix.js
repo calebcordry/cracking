@@ -2,6 +2,7 @@ const rotate = matrix => {
   const size = matrix.length;
   for (let layer = 0; layer < size / 2; layer++) {
     const last = size - 1 - layer;
+
     for (let i = 0; i < last - layer; i ++) {
       const temp = matrix[layer][layer + i];
       // top left
@@ -19,7 +20,7 @@ const rotate = matrix => {
 };
 
 const matrix = [
-  [8, 4, 5, 8, 6, 5, 4], 
+  [8, 4, 5, 8, 6, 5, 4], s
   [9, 8, 6, 1, 4, 2, 0], 
   [6, 7, 2, 1, 7, 8, 7], 
   [1, 5, 1, 3, 0, 2, 4], 
