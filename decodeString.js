@@ -1,30 +1,44 @@
 function decodeString(s) {
-  let result = '';
   let builder = '';
   let index = 0;
+  const numStack = [];
+  const chunkStack = [];
     
   while (index < s.length) {
-    let char = s[index];
-        
-    if (Number(char) !== NaN) {
-      const number = char;
-      index + 2;
-
-      while(char !== ']') {
-        char = s[index];
-        builder += char;
+    if (!isNaN(Number(s[index]))) {
+      let num = s[index];
+      index++;
+      while (!isNaN(Number(s[index]))) {
+        num += s[index];
         index++;
       }
-            
-      result += builder.repeat(number);
+      numStack.push(Number(num));
     }
-        
+
+    if (s[index] === '[') {
+      chunkStack.push(builder);
+      builder = '';
+    }
+    
+    else if (s[index] === ']') {
+      let temp = chunkStack.pop();
+      const repeat = numStack.pop();
+      for (let i = 0; i < repeat; i++) {
+        temp += builder;
+      }
+      builder = temp;
+    }
+
+    else {
+      builder += s[index];
+    }
+
     index++;
   }
     
-  return result;
+  return builder;
 }
 
-const input = '4[ab]';
+const input = 'z1[y]zzz2[abc]';
 const result = decodeString(input);
 console.log(result);
