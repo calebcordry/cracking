@@ -9,7 +9,7 @@ const makeArrayIntoList = require('./makeArrayIntoList');
 
 function reverseNodesInKGroups(l, k) {
 
-  const helper = head => {
+  const helper = (head, k) => {
     let current = l;
     let count = 0;
 
@@ -19,13 +19,14 @@ function reverseNodesInKGroups(l, k) {
     }
 
     if (count === k) {
-      current = reverseNodesInKGroups(current);
+      current = reverseNodesInKGroups(current, k);
 
-      while(count) {
+      while(count > 0) {
         const tmp = head.next; 
         head.next = current;
         current = head; 
         head = tmp; 
+        count--;
       }
 
       head = current;
@@ -34,11 +35,11 @@ function reverseNodesInKGroups(l, k) {
     return head;
   };
   
-  return helper(l);
+  return helper(l, k);
 }
 
 
-const l = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const l = makeArrayIntoList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]); 
 const k = 3;
 
 const result = reverseNodesInKGroups(l, k);
