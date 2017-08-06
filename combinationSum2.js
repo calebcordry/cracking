@@ -4,7 +4,7 @@ var combinationSum2 = function(candidates, target) {
 
   const helper = (index, total, current) => {
     if (total < 0) { return; }
-    
+
     if (total === 0) {
       result.push(current);
       return;
@@ -12,7 +12,7 @@ var combinationSum2 = function(candidates, target) {
 
     for (let i = index; i < candidates.length; i++) {
       if (i > index && candidates[i] == candidates[i-1]) { continue; }
-      helper(i + 1, total - candidates[i], current.concat(candidates[i]));
+      helper(i + 1, tota
     }
   };
 
