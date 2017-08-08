@@ -1,18 +1,31 @@
 function insertBits(n, a, b, k) {
-  const n2 = n.toString(2).padStart(b + 1, 0).split('');
-  const k2 = k.toString(2).padStart(b + 1, 0).split('');
+  const n2 = n.toString(2);
+  const k2 = k.toString(2);
+  let result = '';
 
-  let result = n2.slice(-a).reverse();
+  for (let i = 0; i < a; i++) {
+    const digit = n2[n2.length - 1 - i] || 0;
+    result = digit + result;
+  }
 
-  result = [...result, ...k2.reverse().slice(0, b - a + 1)];
-  result = [...result, ...n2.reverse().slice(b + 1)];
+  let kIndex = 0;
+  for (let i = a; i <= b; i++) {
+    const digit = k2[k2.length - 1 - kIndex] || 0;
+    result = digit + result;
+    kIndex++;
+  }
 
-  return parseInt(result.reverse().join(''), 2);
+  for (let i = b + 1; i <= n2.length; i++) {
+    const digit = n2[n2.length - 1 - i] || 0;
+    result = digit + result;
+  }
+
+  return parseInt(result, 2);
 }
 
-const n = 15;
-const a = 0;
-const b = 0;
-const k = 1;
+const n = 1024;
+const a = 1;
+const b = 6;
+const k = 17;
 const result = insertBits(n, a, b, k);
 console.log(result);
