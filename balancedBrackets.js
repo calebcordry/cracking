@@ -7,15 +7,15 @@ const brackets = string => {
     ']': 'right',
     ')': 'right',
   };
-  
+
   const pairs = { ')':'(', '}':'{', ']':'[' };
-  
+
   const stack = [];
   for (let i = 0; i < string.length; i++) {
     if (map[string[i]] === 'left') {
       stack.push(string[i]);
     }
-    
+
     if (map[string[i]] === 'right') {
       if (stack[stack.length - 1] !== pairs[string[i]]) {
         return 'NO';
@@ -23,5 +23,5 @@ const brackets = string => {
       stack.pop();
     }
   }
-  return stack.length === 0 ? 'YES' : 'NO'; 
+  return stack.length === 0 ? 'YES' : 'NO';
 };
