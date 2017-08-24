@@ -33,6 +33,7 @@ module.exports = {
             "error",
             "always"
         ],
+        "brace-style": ["error", "stroustrup", {"allowSingleLine": true}],
         "no-console": [0]
     }
 };
