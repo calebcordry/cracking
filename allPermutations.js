@@ -2,7 +2,7 @@ const swap = (a, i, j) => {
   const tmp = a[i];
   a[i] = a[j];
   a[j] = tmp;
-}
+};
 
 const permutations = array => {
   if (!array.length) { return ''; }
@@ -29,7 +29,7 @@ const permutations = array => {
 
 const permutations2 = string => {
   if (!string) { return ''; }
-  
+
   const result = [];
 
   const helper = (prefix, suffix) => {
